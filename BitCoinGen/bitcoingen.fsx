@@ -60,15 +60,18 @@ let worker (mailbox:Actor<_>) =
             // [32..127] |> List.map fun x -> sha256Hash.ComputeHash(prefix + char x)
             let mutable mxz = 0
             let mutable str = ""
-            for i in [32..126] do
-                let ps = prefix + string (char i)
-                let en = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(ps)) |> Array.map(fun x -> x.ToString("x2")) |> System.String.Concat
-                let mutable k = 0
-                while en.[k] = '0' do
-                    k <- k + 1
-                if k >= n then 
-                    if k > mxz then mxz <- k
-                    str <- str + sprintf "%s\t%s\n" ps en
+            let mutable prefix = prefix
+            for _ in [1..8] do
+                for i in [32..126] do
+                    let ps = prefix + string (char i)
+                    let en = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(ps)) |> Array.map(fun x -> x.ToString("x2")) |> System.String.Concat
+                    let mutable k = 0
+                    while en.[k] = '0' do
+                        k <- k + 1
+                    if k >= n then 
+                        if k > mxz then mxz <- k
+                        str <- str + sprintf "%s\t%s\n" ps en
+                prefix <- cp prefix
             
             mailbox.Context.Parent <! Fin (mxz, str)
         | _ -> ()
@@ -78,7 +81,7 @@ let worker (mailbox:Actor<_>) =
 
 let boss =  spawn system "boss" <| fun mailbox ->
     let mutable n = 0
-    let mutable nw = 4
+    let mutable nw = 2
     let mutable fw = 0
     let mutable prefix = "sbang"
     let rec loop() = actor {
@@ -89,7 +92,7 @@ let boss =  spawn system "boss" <| fun mailbox ->
             n <- k
             for i in 1..nw do 
                 spawn mailbox.Context ("worker" + string i) worker <! Compute(prefix, n)
-                prefix <- cp prefix
+                for _ in [1..8] do prefix <- cp prefix
         | Fin (k, str) -> 
             if str <> "" then printf "%s" str
             if prefix.Length > 14 then
@@ -98,12 +101,12 @@ let boss =  spawn system "boss" <| fun mailbox ->
             else
                 // if k >= n then n <- k + 1
                 sender <! Compute(prefix, n)
-                prefix <- cp prefix
+                for _ in [1..8] do prefix <- cp prefix
 
         | RemoteWork pool ->
             for w in pool do
                 w <! Compute(prefix, n)
-                prefix <- cp prefix
+                for _ in [1..8] do prefix <- cp prefix
 
         | _ -> ()
 
