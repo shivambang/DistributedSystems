@@ -1,6 +1,6 @@
 #time "on"
 #r "nuget: Akka.FSharp" 
-#r "nuget: Akka.Remote" 
+#r "nuget: Akka.Remote"
 
 open System.Security.Cryptography
 open System.Text
@@ -13,25 +13,15 @@ let config =
         @"akka {
             actor.provider = ""Akka.Remote.RemoteActorRefProvider, Akka.Remote""
             remote.helios.tcp {
-                hostname = ""192.168.0.105""
+                hostname = ""192.168.0.100""
                 port = 8989
             }
         }"
 
-let system = System.create "server" config
-let cp (p:string) = 
-    let mutable i = p.Length - 1
-    let pc = p.ToCharArray()
-    while i > 4 && int pc.[i] + 1 = 128 do
-        pc.[i] <- ' '
-        i <- i - 1
-    if i = 4 then System.String.Concat(pc) + " "
-    else
-        pc.[i] <- char (int pc.[i] + 1)
-        System.String.Concat(pc)
+let system = System.create "client" config
 
 type Msg = 
-    | Start of int
+    | Start
     | Compute of string*int
     | MXZ of int
     | Fin of int*string
@@ -40,6 +30,7 @@ type Msg =
 let worker (mailbox:Actor<_>) =
     let sha256Hash = SHA256Managed.Create()
     let rec loop () = actor {
+        let sender = mailbox.Sender()
         let! msg = mailbox.Receive()
         match msg with
         | Compute (prefix, n) ->
@@ -56,46 +47,27 @@ let worker (mailbox:Actor<_>) =
                     if k > mxz then mxz <- k
                     str <- str + sprintf "%s\t%s\n" ps en
             
-            mailbox.Context.Parent <! Fin (mxz, str)
+            sender <! Fin (mxz, str)
         | _ -> ()
         return! loop()    
     }
     loop()
 
-let boss =  spawn system "boss" <| fun mailbox ->
-    let mutable n = 0
-    let mutable nw = 4
-    let mutable fw = 0
-    let mutable prefix = "sbang"
+let client =  spawn system "client" <| fun mailbox ->
+    let pool = [for i in 1..2 do yield spawn mailbox.Context ("worker" + string i) worker]
     let rec loop() = actor {
         let sender = mailbox.Sender()
         let! msg = mailbox.Receive()
         match msg with
-        | Start k -> 
-            n <- k
-            for i in 1..nw do 
-                spawn mailbox.Context ("worker" + string i) worker <! Compute(prefix, n)
-                prefix <- cp prefix
-        | RemoteWork pool ->
-            for w in pool do
-                w <! Compute(prefix, n)
-                prefix <- cp prefix
-        | Fin (k, str) -> 
-            printfn "%s" str
-            if prefix.Length > 8 then
-                fw <- fw + 1
-                if fw = nw then mailbox.Context.System.Terminate() |> ignore         
-            else
-                // if k >= n then n <- k + 1
-                sender <! Compute(prefix, n)
-
-
+        | Start -> 
+            let server = system.ActorSelection("akka.tcp://boss@192.168.9.105:8989/user/boss")
+            server <! RemoteWork pool
         | _ -> ()
 
         return! loop()
     }
     loop()
 
-boss <! Start 4
+client <! Start
 system.WhenTerminated.Wait()
 printfn "END"
