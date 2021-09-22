@@ -50,7 +50,6 @@ let worker (mailbox:Actor<_>) =
             // [32..127] |> List.map fun x -> sha256Hash.ComputeHash(prefix + char x)
             let mutable mxz = 0
             let mutable str = ""
-            printfn "YES"
             for i in [32..126] do
                 let ps = prefix + string (char i)
                 let en = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(ps)) |> Array.map(fun x -> x.ToString("x2")) |> System.String.Concat
