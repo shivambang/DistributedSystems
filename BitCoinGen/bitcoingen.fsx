@@ -1,3 +1,4 @@
+#time "on"
 #r "nuget: Akka.FSharp" 
 
 open System.Security.Cryptography
@@ -32,7 +33,7 @@ let worker nz (mailbox:Actor<_>) =
         | Compute (prefix) ->
             // [32..127] |> List.map fun x -> sha256Hash.ComputeHash(prefix + char x)
             let mutable mxz = 0
-            for i in [32..127] do
+            for i in [32..126] do
                 let str = prefix + string (char i)
                 let en = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(str)) |> Array.map(fun x -> x.ToString("x2")) |> System.String.Concat
                 let mutable k = 0
@@ -50,13 +51,14 @@ let worker nz (mailbox:Actor<_>) =
     loop()
 
 let boss =  spawn system "boss" <| fun mailbox ->
+    let nw = 4
     let mutable fw = 0
     let rec loop() = actor {
         let! msg = mailbox.Receive()
         match msg with
         | Start k -> 
             let mutable prefix = "sbang"
-            let pool = [for i in 1..4 do yield spawn mailbox.Context ("worker" + string i) (worker k)]
+            let pool = [for i in 1..nw do yield spawn mailbox.Context ("worker" + string i) (worker k)]
             while prefix.Length < 8 do
                 for w in pool do
                     w <! Compute(prefix)
@@ -64,7 +66,7 @@ let boss =  spawn system "boss" <| fun mailbox ->
             for w in pool do w <! Fin
         | Fin -> 
             fw <- fw + 1
-            if fw = 4 then mailbox.Context.System.Terminate() |> ignore         
+            if fw = nw then mailbox.Context.System.Terminate() |> ignore         
 
         | _ -> ()
 
