@@ -1,20 +1,34 @@
 #time "on"
 #r "nuget: Akka.FSharp" 
 #r "nuget: Akka.Remote" 
+#r "nuget: Akka.Serialization.Hyperion"
 
 open System.Security.Cryptography
 open System.Text
 open Akka.FSharp
 open Akka.Actor
+open Akka.Remote
 open Akka.Configuration
+open Akka.Serialization
 
 let config =
-    Configuration.parse
+    ConfigurationFactory.ParseString
         @"akka {
-            actor.provider = ""Akka.Remote.RemoteActorRefProvider, Akka.Remote""
-            remote.helios.tcp {
-                hostname = ""192.168.0.105""
-                port = 8989
+            actor {
+                provider = ""Akka.Remote.RemoteActorRefProvider, Akka.Remote""
+                serializers {
+                    hyperion = ""Akka.Serialization.HyperionSerializer, Akka.Serialization.Hyperion""
+                }
+                serialization-bindings {
+                    ""System.Object"" = hyperion
+                }               
+
+            }
+            remote {
+                helios.tcp {
+                    hostname = 192.168.0.105
+                    port = 8989
+                }
             }
         }"
 
@@ -68,27 +82,28 @@ let boss =  spawn system "boss" <| fun mailbox ->
     let mutable fw = 0
     let mutable prefix = "sbang"
     let rec loop() = actor {
-        let sender = mailbox.Sender()
         let! msg = mailbox.Receive()
+        let sender = mailbox.Sender()
         match msg with
         | Start k -> 
             n <- k
             for i in 1..nw do 
                 spawn mailbox.Context ("worker" + string i) worker <! Compute(prefix, n)
                 prefix <- cp prefix
-        | RemoteWork pool ->
-            for w in pool do
-                w <! Compute(prefix, n)
-                prefix <- cp prefix
         | Fin (k, str) -> 
-            printfn "%s" str
-            if prefix.Length > 8 then
+            if str <> "" then printf "%s" str
+            if prefix.Length > 14 then
                 fw <- fw + 1
                 if fw = nw then mailbox.Context.System.Terminate() |> ignore         
             else
                 // if k >= n then n <- k + 1
                 sender <! Compute(prefix, n)
+                prefix <- cp prefix
 
+        | RemoteWork pool ->
+            for w in pool do
+                w <! Compute(prefix, n)
+                prefix <- cp prefix
 
         | _ -> ()
 
@@ -96,6 +111,6 @@ let boss =  spawn system "boss" <| fun mailbox ->
     }
     loop()
 
-boss <! Start 4
+boss <! Start 6
 system.WhenTerminated.Wait()
 printfn "END"
