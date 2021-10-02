@@ -4,6 +4,7 @@
 #r "nuget: Akka.Serialization.Hyperion"
 
 open System.Security.Cryptography
+open System.Diagnostics
 open System.Text
 open System
 open Akka.FSharp
@@ -12,7 +13,29 @@ open Akka.Remote
 open Akka.Configuration
 open Akka.Serialization
 
-let system = System.create "system" (Configuration.defaultConfig())
+//Set hostname to current PC IP address
+let config =
+    ConfigurationFactory.ParseString
+        @"akka {
+            actor {
+                provider = ""Akka.Remote.RemoteActorRefProvider, Akka.Remote""
+                serializers {
+                    hyperion = ""Akka.Serialization.HyperionSerializer, Akka.Serialization.Hyperion""
+                }
+                serialization-bindings {
+                    ""System.Object"" = hyperion
+                }               
+
+            }
+            remote {
+                helios.tcp {
+                    hostname = 192.168.0.103
+                    port = 8989
+                }
+            }
+        }"
+
+let system = System.create "server" config
 
 let cp (p:string) = 
     let mutable i = p.Length - 1
@@ -61,6 +84,7 @@ let worker (mailbox:Actor<_>) =
     loop()
 
 let boss =  spawn system "boss" <| fun mailbox ->
+    let timer = Stopwatch.StartNew()
     let mutable n = 0
     let mutable nw = 2*Environment.ProcessorCount //No of workers
     let mutable fw = 0
@@ -76,20 +100,21 @@ let boss =  spawn system "boss" <| fun mailbox ->
                 spawn mailbox.Context ("worker" + string i) worker <! Compute(prefix, n)
                 for _ in [1..100] do prefix <- cp prefix
         | Fin (k, str) -> 
-            if k >= n then n <- k + 1   //Comment out this line to print all possible bitcoins
+            // if k >= n then n <- k + 1   //Comment out this line to print all possible bitcoins
             if str <> "" then printf "%s" str
-            if prefix.Length > 8 then   //Increase number to get more bitcoins (Increase the max length of prefix to be processed)
+            if prefix.Length > 9 || timer.ElapsedMilliseconds > int64 300000 then  
                 fw <- fw + 1
                 if fw = nw then 
-                    printfn "Max %d prefix zeroes found!" (n - 1)   
-                    if rpool.Length > 0 then rpool.[0] <! Stop
+                    // printfn "Max %d prefix zeroes found!" (n - 1)   
+                    for w in rpool do
+                        w <! Stop
                     mailbox.Context.System.Terminate() |> ignore         
             else
                 sender <! Compute(prefix, n)
                 for _ in [1..100] do prefix <- cp prefix
 
         | RemoteWork pool ->
-            rpool <- pool
+            rpool <- rpool @ [pool.[0]]
             for w in pool do
                 nw <- nw + 1
                 w <! Compute(prefix, n)

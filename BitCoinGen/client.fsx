@@ -12,8 +12,6 @@ open Akka.Remote
 open Akka.Configuration
 open Akka.Serialization
 
-let args = fsi.CommandLineArgs
-
 //Set hostname to current PC IP address
 let config =
     ConfigurationFactory.ParseString
@@ -30,8 +28,8 @@ let config =
             }
             remote {
                 helios.tcp {
-                    hostname = "+args.[1]+
-                    "port = 9898
+                    hostname = 192.168.0.100
+                    port = 9898
                 }
             }
         }"
@@ -48,7 +46,7 @@ type Msg =
 let cp (p:string) = 
     let mutable i = p.Length - 1
     let pc = p.ToCharArray()
-    while i > 4 && int pc.[i] + 1 = 128 do
+    while i > 4 && int pc.[i] + 1 > 126 do
         pc.[i] <- ' '
         i <- i - 1
     if i = 4 then System.String.Concat(pc) + " "
@@ -63,7 +61,6 @@ let worker (mailbox:Actor<_>) =
         let sender = mailbox.Sender()
         match msg with
         | Compute (prefix, n) ->
-            // [32..127] |> List.map fun x -> sha256Hash.ComputeHash(prefix + char x)
             let mutable mxz = 0
             let mutable str = ""
             let mutable prefix = prefix
@@ -87,9 +84,10 @@ let worker (mailbox:Actor<_>) =
     loop()
 
 
+let args = fsi.CommandLineArgs
 let nw = 2*Environment.ProcessorCount //No of workers
 let pool = [for i in 1..nw do yield spawn system ("worker" + string i) worker]
-let server = select ("akka.tcp://server@"+args.[2]+":8989/user/boss") system
+let server = select ("akka.tcp://server@"+args.[1]+":8989/user/boss") system
 server <! RemoteWork pool
 system.WhenTerminated.Wait()
 printfn "END"

@@ -1,0 +1,94 @@
+Server
+dotnet fsi server.fsx 6
+Real: 00:00:00.000, CPU: 00:00:00.000, GC gen0: 0, gen1: 0, gen2: 0
+[INFO][25-09-2021 02:38:36][Thread 0001][remoting (akka://server)] Starting remoting
+[INFO][25-09-2021 02:38:36][Thread 0001][remoting (akka://server)] Remoting started; listening on addresses : [akka.tcp://server@192.168.0.103:8989]
+[INFO][25-09-2021 02:38:36][Thread 0001][remoting (akka://server)] Remoting now listens on addresses: [akka.tcp://server@192.168.0.103:8989]
+6
+sbang*(lc       000000ffdc12ac8ca9cc6ce113be35785e4e72102c4ba53e6c5ac52d923008d9
+sbang2gcB       000000c8e9e832d69b1c15730fcfa5432ee067c18a2499d68596ed363324d791        REMOTE
+sbang;B[?       00000092eb1b7934a6e3a4fe681480a9e03466959767cd29231ad4b45507a9a9        REMOTE
+sbang<0QG       00000081be75d191a4a775a4f5b5aa60c08c8959828e22b1c5a0643f1a01a088        REMOTE
+sbangO68r       00000050e7fe12a4faa5f4b0baadc3ee7cc4328073bc17c7a4e44a907209b637
+sbangnml/       00000086b5409e255b4faefd2ef870eb0dd9237842cec40532de32575e11f029        REMOTE
+sbang  ECp      000000caecc7775b95fbed72440ec0d2fd4b6fe98b64ee33027eb5072647a309        REMOTE
+sbang &9`?      00000018ac9a44c93e10450ec7e59ec4825f0a3045524eef7931fe693d2d809e
+sbang 1dDW      000000aad19ebfb03b253612d3209be83bcd93028ee1c49df4b64d0745846ce5
+sbang Bw3a      0000003a17d7da3809c562f9480994de30f1af53b4b0beb97f63f385dd793378        REMOTE
+sbang E;B@      000000b86889e46dcf530c10359341822c450da828ed7ef1565c2fb3284cdb1d        REMOTE
+sbang JXY8      0000003a87e360a72fbbb7922983b3692446e34deb6f8e9a0477f35a92893579
+sbang So2Y      00000013056f9bf4a2fa13bdcc376baee788e47ecda88af7ec10f625ae4da1d8        REMOTE
+sbang UUlW      0000006f1a7aeb86c64fb58659048870dd51bd5f1b1876047cdc245dc1223cf1        REMOTE
+sbang [YVg      0000004083fabdb8b39574c49ee4b530908226267da93fe758abf482a7015f9a        REMOTE2
+sbang hjyj      0000007e2f634626e783ab40ec6dd5ee84709574d6118537ea7189504b146e45
+sbang my`_      0000002bd8774a07dd91647e23bde3f86df2bad224f9858cf24006f183b80f73        REMOTE
+sbang yFN'      0000002cf2f3d67a513284b2f1a99d80269c05cee51c7f33170edf202f24d687        REMOTE
+sbang!,tME      000000cd996f6466b39e42363466aed99f5550a49b8d155d6b3267876118f4c8
+sbang!?qGG      000000d826d3e92a24982b8d5596f57cb440991c584e476b48c4fd8dd1cb94cd
+sbang!IID.      000000c2fc1758ebf826a56e4141a3c03eb231117b6f49867b930e2b21d86cb7        REMOTE
+sbang!~&<}      0000008f83f024620574d020a0cb19af6f074deacbaae11ce517068d34c668f8
+sbang"8$O(      0000002d220967dead800acc338c27a58d74861241987fe4d36a99e1f609f547        REMOTE2
+sbang":Ie^      000000b9247248ee13f41fe0959633baf30d42dcca0d766c3b645d1ac7856cc1
+sbang#!7x+      000000163cdeb216b59279d6da5c4200385e8643574bd3b221e40d7c8979e999        REMOTE
+sbang#Mr*g      00000080aab7a16fdbf5c45c0492dfdb5de869dd06593c4763870af61d205123        REMOTE
+sbang#f)b$      000000aef79a38a35b181445e963977dcc457d2d32f7447a4d855febf90b7e67        REMOTE
+sbang$BK+^      0000005397bd705d7baa58976e142cf443f97d4200c80f5030a504f2e87f2f06
+sbang$J?Wa      000000adf3da342e89c902070ee3be0331a510ec9e26f19b46fad15dae896b3f        REMOTE
+sbang$M>Zu      000000c0f58e70ac59bb4e469a7fe45db928c38a396b8f56e6577da93b36e8df        REMOTE2
+sbang$OCOx      000000a4cb4735ac47a7cc50b680831d894bfaf208020512085b33c2d1db38ab
+sbang$Y_O]      0000001113e4fe33c2ce388a78cd77a7d8bc339f945c31bd84a5e2497bdfa35f        REMOTE
+sbang$y1O}      00000015d4a229bbd7fdd2b15de37eba5d031d649cb8fbd2f002dc8fb28fd7d3        REMOTE
+sbang%D`(V      000000a49140db0b3ce9353b4d034e0db21e50de2b4710627655ddb5340fabb3        REMOTE
+sbang%dSiC      0000009e116abd4fe8039787be3275a056043406b4ec7e98096ed1e8c81b5254        REMOTE
+sbang%pr&c      000000b00bbf956bfdbce9c12045ae03a534238dffbf1aa0f9dfac7f0d39e387
+sbang%wBV!      0000005cec9ad9e9eea536b99844372bce9b1576a6cdf66f08ca41b6e64b4db0        REMOTE
+sbang&%@z7      000000dd86ea64047626ec16a512d1211033907acbf56bcff24e421f8f49947e
+sbang&A})^      0000005331f5bb084dff3630286dc78e197aecb69b14d914c3762029ee5c1893
+sbang&kpV1      000000aa65be922d408f1aa214e8117c097c5892ae8b5ccafe3388a93c25d132        REMOTE
+sbang&t(JZ      000000c6b7b7f990391403065cd15289fbfe220b302a6c2af5de31dd84e20b79
+sbang'!fJu      00000008bc3bce636ef3677e3d35f5473dddcc0046f5e0041defee49d8b0c3ad
+sbang'+(P6      000000d0414b7dd6919fbd8d293d8ae70ad026f17221e0fdfe5da6ddc2776b56
+sbang',#iY      000000c066ba57920b2ce2310980fbec9bc37f72847cf6070251f3e6ae1ee061
+sbang'5J7(      0000007f890d74407f5b57b3c01a6832a972ee1def645d96bcba695c224b7a7d
+sbang'8U_       00000098d92989f7c562d18a9ea360da24d56e713b97bc113cb50ed181d18ea0
+sbang'qA^v      000000956f3d19590edd3a360dabe7b3ad0f2187656ddb856065b44710013f81        REMOTE
+sbang(/=ba      0000006ca10bfee0c38fedd2bad1bf20d14502308e03f8f426f6393d39b298b3
+sbang(Qm$d      000000b50dac5a8ab6002eb85104cff326742e2ea0058b1b409037b5af4abae4        REMOTE
+sbang(U1%]      0000006c51249e1a398a6170d423852ba7260dcb11110b2304ac111d9b707561        REMOTE
+sbang(|D&z      0000006c4faaf07eede070063b45a472d43a2903ad393eef42a708fb39306632
+[INFO][25-09-2021 02:43:36][Thread 0019][remoting-terminator] Shutting down remote daemon.
+[INFO][25-09-2021 02:43:36][Thread 0019][remoting-terminator] Remote daemon shut down; proceeding with flushing remote transports.
+[INFO][25-09-2021 02:43:36][Thread 0025][akka.tcp://server@192.168.0.103:8989/system/endpointManager/reliableEndpointWriter-akka.tcp%3A%2F%2Fclient%40192.168.0.105%3A9898-2] Removing receive buffers for [akka.tcp://server@192.168.0.103:8989]->[akka.tcp://client@192.168.0.105:9898]
+[INFO][25-09-2021 02:43:36][Thread 0022][akka.tcp://server@192.168.0.103:8989/system/endpointManager/reliableEndpointWriter-akka.tcp%3A%2F%2Fclient%4010.0.2.15%3A9898-1] Removing receive buffers for [akka.tcp://server@192.168.0.103:8989]->[akka.tcp://client@10.0.2.15:9898]
+[INFO][25-09-2021 02:43:36][Thread 0043][remoting (akka://server)] Remoting shut down
+[INFO][25-09-2021 02:43:36][Thread 0023][remoting-terminator] Remoting shut down.
+END
+Real: 00:05:00.617, CPU: 00:18:06.953, GC gen0: 123578, gen1: 41, gen2: 3
+
+Client 1:
+dotnet fsi client.fsx 192.168.0.103
+Real: 00:00:00.000, CPU: 00:00:00.000, GC gen0: 0, gen1: 0, gen2: 0
+[INFO][25-09-2021 02:38:44][Thread 0001][remoting (akka://client)] Starting remoting
+[INFO][25-09-2021 02:38:44][Thread 0001][remoting (akka://client)] Remoting started; listening on addresses : [akka.tcp://client@192.168.0.105:9898]
+[INFO][25-09-2021 02:38:44][Thread 0001][remoting (akka://client)] Remoting now listens on addresses: [akka.tcp://client@192.168.0.105:9898]
+[INFO][25-09-2021 02:43:37][Thread 0015][remoting-terminator] Shutting down remote daemon.
+[INFO][25-09-2021 02:43:37][Thread 0015][remoting-terminator] Remote daemon shut down; proceeding with flushing remote transports.
+[INFO][25-09-2021 02:43:37][Thread 0017][akka.tcp://client@192.168.0.105:9898/system/endpointManager/reliableEndpointWriter-akka.tcp%3A%2F%2Fserver%40192.168.0.103%3A8989-1] Removing receive buffers for [akka.tcp://client@192.168.0.105:9898]->[akka.tcp://server@192.168.0.103:8989]
+[INFO][25-09-2021 02:43:37][Thread 0027][remoting (akka://client)] Remoting shut down
+[INFO][25-09-2021 02:43:37][Thread 0016][remoting-terminator] Remoting shut down.
+END
+Real: 00:04:53.479, CPU: 00:10:44.984, GC gen0: 116407, gen1: 36, gen2: 2
+
+Client 2:
+dotnet fsi client.fsx 192.168.0.103
+Real: 00:00:00.000, CPU: 00:00:00.000, GC gen0: 0, gen1: 0, gen2: 0
+[INFO][9/25/2021 5:38:38 AM][Thread 0001][remoting (akka://client)] Starting remoting
+[INFO][9/25/2021 5:38:38 AM][Thread 0001][remoting (akka://client)] Remoting started; listening on addresses : [akka.tcp://client@10.0.2.15:9898]
+[INFO][9/25/2021 5:38:38 AM][Thread 0001][remoting (akka://client)] Remoting now listens on addresses: [akka.tcp://client@10.0.2.15:9898]
+[INFO][9/25/2021 5:43:36 AM][Thread 0013][remoting-terminator] Shutting down remote daemon.
+[INFO][9/25/2021 5:43:36 AM][Thread 0013][remoting-terminator] Remote daemon shut down; proceeding with flushing remote transports.
+[INFO][9/25/2021 5:43:36 AM][Thread 0014][akka.tcp://client@10.0.2.15:9898/system/endpointManager/reliableEndpointWriter-akka.tcp%3A%2F%2Fserver%40192.168.0.103%3A8989-1] Removing receive buffers for [akka.tcp://client@10.0.2.15:9898]->[akka.tcp://server@192.168.0.103:8989]
+[INFO][9/25/2021 5:43:36 AM][Thread 0025][remoting (akka://client)] Remoting shut down
+[INFO][9/25/2021 5:43:36 AM][Thread 0015][remoting-terminator] Remoting shut down.
+END
+Real: 00:04:58.514, CPU: 00:12:38.984, GC gen0: 140223, gen1: 3505, gen2: 3
